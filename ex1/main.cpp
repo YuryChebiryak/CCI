@@ -7,8 +7,10 @@
 //
 #include <algorithm>
 #include <iostream>
+#include <array>
 //#include <boost/flat_set>
 #include <set>
+#include <bitset>
 // Implement an algorithm to determine if a string has all unique character.
 // What if you cannot use additional data structures?
 
@@ -45,10 +47,41 @@ bool uniqueChars(std::string in) {
     return true;
 }
 
+//if we know the character set, we can use additional array with ascii codes (unicode) and mark characters
+// we have seen already. That'd be the fastest solution, linear in time
+bool uniqueChars2(const std::string& in) {
+    if (in.size() > 256) return false;
+    std::array<bool, 256> seen;
+    seen.fill(false);
+    for (char c : in)
+        if (seen[static_cast<unsigned>(c)])
+            return false;
+        else
+            seen[static_cast<unsigned>(c)] = true;
+    return false;
+}
+
+//next optimization is for space: use bitsets
+bool uniqueChars3(const std::string& in) {
+    if (in.size() > 256) return false;
+    std::bitset<256> seen;
+    std::cout << "size of bitset: " << sizeof(std::bitset<256>) << std::endl;
+    seen.reset();
+    for (char c : in)
+        if (seen[static_cast<unsigned>(c)])
+            return false;
+        else
+            seen[static_cast<unsigned>(c)] = true;
+    return false;
+}
+
 
 int main(int argc, const char * argv[]) {
-    std::string testing="afqqnvz";
+    std::string testing="afqnvz";
     std::cout << "testing using " << testing << std::endl;
-    std::cout << naiveSolution(testing);
+    std::cout << naiveSolution(testing) << std::endl;
+    std::cout << uniqueChars(testing) << std::endl;
+    std::cout << uniqueChars2(testing) << std::endl;
+    std::cout << uniqueChars3(testing) << std::endl;
     return 0;
 }

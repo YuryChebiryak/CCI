@@ -29,11 +29,11 @@ bool naiveSolution(const std::string& in) {
 //if we can't use additional data structures, we still can simply sort the string,
 // and then go through it and figure out if there are non-unique characters
 // for the same complexity: sorting is O(n log n) + linear pass-through = O(n log n)
-bool uniqueChars(const std::string& in) {
-    std::string sorted { in};
-    std::sort(sorted.begin(), sorted.end());
+bool uniqueChars(std::string in) {
+//    std::string sorted { in};
+    std::sort(in.begin(), in.end());
     char prevChar = '\0';
-    for (char c : sorted)
+    for (char c : in)
         if (prevChar == '\0') {
             prevChar = c;
             continue;
@@ -47,7 +47,7 @@ bool uniqueChars(const std::string& in) {
 
 
 int main(int argc, const char * argv[]) {
-    std::string testing="aafqnvz";
+    std::string testing="afqqnvz";
     std::cout << "testing using " << testing << std::endl;
     std::cout << naiveSolution(testing);
     return 0;

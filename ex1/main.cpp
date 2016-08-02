@@ -58,7 +58,7 @@ bool uniqueChars2(const std::string& in) {
             return false;
         else
             seen[static_cast<unsigned>(c)] = true;
-    return false;
+    return true;
 }
 
 //next optimization is for space: use bitsets
@@ -72,9 +72,20 @@ bool uniqueChars3(const std::string& in) {
             return false;
         else
             seen[static_cast<unsigned>(c)] = true;
-    return false;
+    return true;
 }
 
+//if we assume english lowercase, can squeeze into 32 bit integer
+bool uniqueChars4(const std::string& in) {
+    if (in.size() > 32) return false;
+    unsigned seen {0};
+    for (char c : in)
+        if (seen & (1 << (c - 'a')))
+            return false;
+        else
+            seen = seen | (1 << (c - 'a'));
+    return true;
+}
 
 int main(int argc, const char * argv[]) {
     std::string testing="afqnvz";
@@ -83,5 +94,6 @@ int main(int argc, const char * argv[]) {
     std::cout << uniqueChars(testing) << std::endl;
     std::cout << uniqueChars2(testing) << std::endl;
     std::cout << uniqueChars3(testing) << std::endl;
+    std::cout << uniqueChars4(testing) << std::endl;
     return 0;
 }

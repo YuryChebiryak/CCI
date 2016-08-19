@@ -20,14 +20,19 @@ bool isPermutationNaive(const std::string& a, const std::string& b) {
         return false;
     vector<int> chars;
     chars.assign(32, 0);
-	for_each(a.begin(), a.end(), [&chars](char c) {chars[c - 'a']++; });
-    //for (auto i = 0; i < a.length(); ++i)
-    //    chars[ a[i] - 'a' ]++;
-    for (auto i = 0; i < b.length(); ++i) {
-        chars[ b[i] - 'a' ]--;
-        if (chars[ b[i] - 'a'] < 0)
-            return false;
-    }
+	//for_each(a.begin(), a.end(), [&chars](char c) {chars[c - 'a']++; });
+	//for (auto i = 0; i < a.length(); ++i)
+	//    chars[ a[i] - 'a' ]++;
+	for (char c : a)
+		chars[c - 'a']++;
+	for (char c : b)
+		if (--chars[c - 'a'] < 0)
+			return false;
+    //for (auto i = 0; i < b.length(); ++i) {
+    //    chars[ b[i] - 'a' ]--;
+    //    if (chars[ b[i] - 'a'] < 0)
+    //        return false;
+    //}
     return true;
 }
 

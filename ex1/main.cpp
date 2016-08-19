@@ -80,10 +80,10 @@ bool uniqueChars4(const std::string& in) {
     if (in.size() > 32) return false;
     unsigned seen {0};
     for (char c : in)
-        if (seen & (1 << (c - 'a')))
+        if (seen bitand (1 << (c - 'a')))
             return false;
         else
-            seen = seen | (1 << (c - 'a'));
+            seen = seen bitor (1 << (c - 'a'));
     return true;
 }
 

@@ -10,6 +10,8 @@
 
 //1.5 Implement a method to perform basic string compression using the counts of repeated characters. For example, the string a a b c c c c c a a a would become a2blc5a3. If the "compressed" string would not become smaller than the original string, your method should return the original string
 #include <string>
+#include <stdlib.h>
+#include <stdio.h>
 #include <sstream>
 using namespace std;
 string compress(const string& s) {
@@ -32,6 +34,28 @@ string compress(const string& s) {
     if (str.length() < s.length())
         return str;
     return s;
+}
+
+int compressedLen(const string& s) {
+    char prev = '\0';
+    int total = 0;
+    int count = 0;
+    int len = 0;
+    char buffer[32];
+    for (char c: s) {
+        if (c != prev) {
+            if (count) {
+                char buffer[32];
+                sprintf(buffer,"%d",count);
+                total += 1 + strlen(buffer);
+            }
+            count = 1;
+            prev = c;
+        } else count++;
+    }
+    sprintf(buffer, "%d", count);
+    total += 1 + strlen(buffer);
+    return len;
 }
 
 int main(int argc, const char * argv[]) {

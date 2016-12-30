@@ -32,9 +32,7 @@ void removeDups2(std::list<int>& l) {
     auto iter = l.begin();
     while (iter != l.end()) {
         if (s.find(*iter) != s.end()) {
-            auto current = iter;
-            iter++;
-            l.erase(current);
+            l.erase(iter++);
         } else {
             s.insert(*iter);
             iter++;

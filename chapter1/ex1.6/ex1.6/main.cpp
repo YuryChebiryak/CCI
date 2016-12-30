@@ -48,9 +48,25 @@ void rotate(char m[], int sz) {
                     std::cout << m[4] << m[5] << m[6] << m[7] << std::endl;
                     std::cout << m[8] << m[9] << m[10] << m[11]<< std::endl;
                     std::cout << m[12]<< m[13]<< m[14]<< m[15]<< std::endl;
-
     }
+}
 
+int index(int i, int j, int sz) {
+    return (i * sz + j) % (sz * sz);
+}
+
+void rotate2(char m[], int sz) {
+    for (int offset = 0; offset < sz/2; ++offset) {
+        for (int i = 0; offset + i + offset < sz - 1; ++i) {
+            std::swap(m[index(offset, i + offset, sz)], m[index(i + offset, sz - offset - 1, sz)]);
+            std::swap(m[index(i + offset, sz - offset - 1, sz)], m[index(sz - offset - 1, sz - i - offset -1, sz)]);
+            std::swap(m[index(sz - offset - 1, sz - i - offset - 1, sz)], m[index(sz - i - offset - 1, offset, sz)]);
+        }
+        std::cout << m[0] << m[1] << m[2] << m[3] << std::endl;
+        std::cout << m[4] << m[5] << m[6] << m[7] << std::endl;
+        std::cout << m[8] << m[9] << m[10] << m[11]<< std::endl;
+        std::cout << m[12]<< m[13]<< m[14]<< m[15]<< std::endl;
+    }
 }
 
 int main(int argc, const char * argv[]) {
@@ -58,7 +74,7 @@ int main(int argc, const char * argv[]) {
     char test[] = {'A','B','C','D', 'e','f','g','h', 'i','j','k','l', 'm','n','O','p', '_', ' ', '\r','\n'};
     // insert code here...
     std::cout << test << std::endl;
-    rotate(test, 4);
+    rotate2(test, 4);
     std::cout << test << std::endl;
     return 0;
 }

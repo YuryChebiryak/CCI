@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "rotate(char*, int):main.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "m[i * sz + j]">
+            </PersistentString>
+            <PersistentString
+               value = "m[j*sz + sz -i-1]">
+            </PersistentString>
+            <PersistentString
+               value = "m[(j*sz + sz - i -1) % (sz * 2)]">
+            </PersistentString>
+            <PersistentString
+               value = "m">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

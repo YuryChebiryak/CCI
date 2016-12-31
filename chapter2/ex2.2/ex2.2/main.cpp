@@ -28,15 +28,28 @@ T k_th_element(const std::forward_list<T>& list, size_t n) {
     return T();
 }
 
+template<typename T>
+T k_th_element2(const std::forward_list<T>& list, size_t k) {
+    auto iter1 = list.begin();
+    auto iter2 = iter1;
+    for (int i = 0; i < k; ++i)
+        ++iter2;
+    while (std::next(iter2) != list.end()) {
+        ++iter2;
+        ++iter1;
+    }
+    return *iter1;
+}
+
 
 int main(int argc, const char * argv[]) {
     // insert code here...
     std::cout << "Hello, World!\n";
     std::forward_list<int> l = { 16, 7, 5, 16, 8,  25};
     
-    std::cout << k_th_element(l, 0);
+    std::cout << k_th_element2(l, 0);
     
-    std::cout << std::endl << k_th_element(l, 5);
+    std::cout << std::endl << k_th_element2(l, 5);
     
     return 0;
 }

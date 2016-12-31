@@ -38,6 +38,32 @@ void removeDups2(std::forward_list<int>& l) {
     }
 }
 
+void removeDupsNoBuffer(std::forward_list<int>& l) {
+    if (l.empty())
+        return;
+    auto backtrack = l.before_begin();
+    while (std::next(backtrack) != l.end()) {
+        // Iterate and print values of the list
+        for (int n : l)
+            std::cout << n << '\t';
+        std::cout << std::endl;
+
+        auto prev = std::next(backtrack);
+        auto iter = std::next(prev);
+        //std::cout << " prev =" << *prev << ", iter=" << *iter << std::endl;
+        while (iter != l.end()) {
+            if (*iter == *std::next(backtrack))
+                iter = l.erase_after(prev);
+            else {
+                ++prev;
+                ++iter;
+            }
+                
+        }
+        ++backtrack;
+    }
+}
+
 int main(int argc, const char * argv[]) {
     // insert code here...
     std::cout << "Hello, World!\n";
@@ -51,7 +77,7 @@ int main(int argc, const char * argv[]) {
         std::cout << n << '\t';
     std::cout << std::endl;
     
-    removeDups2(l);
+    removeDupsNoBuffer(l);
     
     // Iterate and print values of the list
     for (int n : l)

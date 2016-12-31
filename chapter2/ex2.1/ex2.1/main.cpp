@@ -10,32 +10,27 @@
 #include <list>
 #include <algorithm>
 #include <unordered_set>
+#include <forward_list>
 
-void removeDups(std::list<int>& l) {
-    //std::sort(l.begin(), l.end());
+void removeDups(std::forward_list<int>& l) {
     l.sort();
     for (int n : l)
         std::cout << n << '\t';
     std::cout << std::endl;
     l.unique();
-//    auto iter = l.begin();
-//    while (iter != l.end()) {
-//        auto next = iter + 1;
-//        if (*iter == *next) {
-//            l.erase
-//        }
-//    }
 }
 
-void removeDups2(std::list<int>& l) {
+void removeDups2(std::forward_list<int>& l) {
     std::unordered_set<int> s;
+    auto prev = l.before_begin();
     auto iter = l.begin();
     while (iter != l.end()) {
         if (s.find(*iter) != s.end()) {
-            l.erase(iter++);
+            iter = l.erase_after(prev);
         } else {
             s.insert(*iter);
-            iter++;
+            ++iter;
+            ++prev;
         }
     }
 }
@@ -43,10 +38,10 @@ void removeDups2(std::list<int>& l) {
 int main(int argc, const char * argv[]) {
     // insert code here...
     std::cout << "Hello, World!\n";
-    std::list<int> l = { 7, 5, 16, 8,  25};
+    std::forward_list<int> l = { 16, 7, 5, 16, 8,  25};
     
     l.push_front(25);
-    l.push_back(16);
+//    l.push_back(16);
     
     // Iterate and print values of the list
     for (int n : l)

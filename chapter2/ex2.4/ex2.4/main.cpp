@@ -33,13 +33,27 @@ void partition_around_x(std::forward_list<T>& list, const T& x) {
     }
 }
 
+template<typename T>
+void partition_2(std::forward_list<T>& list, const T& x) {
+    auto iter = list.before_begin();
+    while(std::next(iter) != list.end()) {
+        if ((*std::next(iter) < x) and (iter != list.before_begin())) {
+            list.push_front(*std::next(iter));
+            list.erase_after(iter);
+        } else {
+            ++iter;
+        }
+    }
+}
+
 int main(int argc, const char * argv[]) {
-    std::forward_list<int> l = { 6,2,7,3,5,4,1,5,6};
+    std::forward_list<int> l = { 1, 6,2,7,3,5,4,1,5,6};
     // Iterate and print values of the list
     for (int n : l)
         std::cout << n << '\t';
     std::cout << std::endl;
-    partition_around_x(l,4);
+//    partition_around_x(l,4);
+    partition_2(l, 2);
     for (int n : l)
         std::cout << n << '\t';
     return 0;

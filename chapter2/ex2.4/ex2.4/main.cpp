@@ -10,6 +10,7 @@
 #include <forward_list>
 #include <algorithm>
 
+// Cracking the Coding Interview, 5th Edition
 //2.4 Write code to partition a linked list around a value x, such that all nodes less than x come before alt nodes greater than or equal to x.
 
 template<typename T>

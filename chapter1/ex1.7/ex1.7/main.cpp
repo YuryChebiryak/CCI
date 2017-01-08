@@ -5,7 +5,7 @@
 //  Created by Yury Chebiryak on 30/12/16.
 //  Copyright © 2016 Yury Chebiryak. All rights reserved.
 //
-
+// Cracking the Coding Interview, 5th Edition
 //1.7 Write an algorithm such that if an element in an MxN matrix is 0, its entire row and column are set to 0.
 
 #include <iostream>

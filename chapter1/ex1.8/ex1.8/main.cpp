@@ -5,7 +5,7 @@
 //  Created by Yury Chebiryak on 30/12/16.
 //  Copyright © 2016 Yury Chebiryak. All rights reserved.
 //
-
+// Cracking the Coding Interview, 5th Edition
 //1.8 Assume you have a method isSubstring which checks if one word is a substring of another. Given two strings, s1 and s2, write code to check if s2 is a rotation of s1 using only one call to isSubstring (e.g., "waterbottLe" is a rotation of "erbottleewat").
 #include <iostream>
 #include <string>

@@ -12,6 +12,7 @@
 #include <unordered_set>
 #include <forward_list>
 
+//// Cracking the Coding Interview, 5th Edition
 //2.1 Write code to remove duplicates from an unsorted linked list. FOLLOW UP
 // How would you solve this problem if a temporary buffer is not allowed?
 

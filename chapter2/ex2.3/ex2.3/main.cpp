@@ -5,6 +5,8 @@
 //  Created by Yury Chebiryak on 31/12/16.
 //  Copyright © 2016 Yury Chebiryak. All rights reserved.
 //
+
+//// Cracking the Coding Interview, 5th Edition
 //2.3 Implement an algorithm to delete a node in the middle of a singly linked list, given only access to that node.
 
 #include <iostream>

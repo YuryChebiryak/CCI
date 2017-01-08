@@ -11,7 +11,8 @@
 //#include <boost/flat_set>
 #include <set>
 #include <bitset>
-// Implement an algorithm to determine if a string has all unique character.
+// Cracking the Coding Interview, 5th Edition
+// ex1.1 Implement an algorithm to determine if a string has all unique character.
 // What if you cannot use additional data structures?
 
 // quick solution using std::set

@@ -9,7 +9,7 @@
 #include <iostream>
 //#include <algorithm>
 #include <utility>
-
+// Cracking the Coding Interview, 5th Edition
 //1.2 Implement a function void reverse(char* str) in C or C++ which reverses a null-termi- nated string.
 
 //! first pass to figure out the length of the string, second one swaps the characters

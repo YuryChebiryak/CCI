@@ -5,7 +5,7 @@
 //  Created by Yury Chebiryak on 26/12/16.
 //  Copyright © 2016 Yury Chebiryak. All rights reserved.
 //
-
+// Cracking the Coding Interview, 5th Edition
 //1.6 Given an image represented by an NxN matrix, where each pixel in the image is 4
 // bytes, write a method to rotate the image by 90 degrees. Can you do this in place?
 

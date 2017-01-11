@@ -17,13 +17,15 @@ std::unordered_set<char> intersection(const std::string& a, const std::string& b
     for (char c: b)
         bb.insert(c);
     for (int c=65; c<122; ++c)
-        if ((aa.count((char) c) >0) and (bb.count((char) c)> 0))
+        if ((aa.find((char) c) != aa.end()) and (bb.find((char) c) != bb.end()))
             res.insert((char) c);
     return res;
 }
 
 int main(int argc, const char * argv[]) {
     // insert code here...
-    std::cout << "Hello, World!\n";
+    auto res = intersection("abra", "kadabra");
+    for (auto c: res)
+        std::cout << c << ", ";
     return 0;
 }

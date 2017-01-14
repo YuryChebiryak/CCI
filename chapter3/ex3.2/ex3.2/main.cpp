@@ -18,12 +18,11 @@ public:
         theValues.push(v);
         if ((theMin.size() == 0) or (theMin.top() >= v))
             theMin.push(v);
-        else
-            theMin.push(theMin.top());
     }
     
     void pop() {
-        theMin.pop();
+        if ((theMin.size() > 0) and (theMin.top() == theValues.top()))
+            theMin.pop();
         return theValues.pop();
     }
     
@@ -38,7 +37,6 @@ private:
     std::stack<T> theValues;
     std::stack<T> theMin;
 };
-
 
 int main(int argc, const char * argv[]) {
     MinStack<int> t;

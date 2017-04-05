@@ -76,7 +76,7 @@ public:
 		for (auto& v : theContainer) {
 			res += "[";
 			for(auto& el : v)
-				res += string(el) + ","; //""std::to_string(el) + ",";
+				res += std::to_string(el) + ",";
 			res += "],";
 		}
 		return res + ")";

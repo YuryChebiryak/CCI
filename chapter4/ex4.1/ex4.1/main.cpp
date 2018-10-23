@@ -10,7 +10,9 @@
 #include <utility>
 #include <set>
 #include <queue>
+#include <algorithm>
 #include <unordered_set>
+#include <stdlib.h>
 /*
  
  ex 4.1
@@ -29,7 +31,7 @@ public:
 
 template<typename T>
 std::pair<bool, int> checkBalanced(TreeNode<T>* root) {
-    std::cout << "at " ; root->print();
+//    std::cout << "at " ; root->print();
     std::pair<bool, int> recurseLeft {false, 0};
     std::pair<bool, int> recurseRight {false, 0};
     if (root->right)
@@ -37,17 +39,27 @@ std::pair<bool, int> checkBalanced(TreeNode<T>* root) {
     if (root->left)
         recurseLeft = checkBalanced(root->left);
     if (!recurseLeft.first || !recurseRight.first) {
-        std::cout << " some sub-tree is unbalanced " << std::endl;
+  //      std::cout << " some sub-tree is unbalanced " << std::endl;
         return std::make_pair(false, 0);
     }
     if (abs(recurseLeft.second - recurseRight.second) > 1) {
-        std::cout << " one sub-tree is much higher than the other ";
+    //    std::cout << " one sub-tree is much higher than the other ";
         return std::make_pair(false, 0);
     }
     int max_height {std::max(recurseRight.second, recurseLeft.second) + 1};
-    std::cout << " node is balanced, max height of the sub-trees is " << max_height << " ";
+    //std::cout << " node is balanced, max height of the sub-trees is " << max_height << " ";
     return std::make_pair(true, max_height);
-    
+}
+
+template<typename T>
+int getHeight(TreeNode<T>* root) {
+    int recurseLeft { 0 };
+    int recurseRight { 0 };
+    if (root->right)
+        recurseRight = getHeight(root->right);
+    if (root->left)
+        recurseLeft = getHeight(root->left);
+    return std::max(recurseLeft, recurseRight) + 1;
 }
 
 /*
@@ -100,7 +112,42 @@ bool BFSreach(const Graph& g, int source, int target) {
     return false;
 }
 
-int main(int argc, const char * argv[]) {
+/*
+4.3 Given a sorted (increasing order) array with unique integer elements, write an algo- rithm to create a binary search tree with minimal height.
+*/
+
+// 1 3 6 7 8 20 24 33 35 39 41 46 50 90 121
+// isn't it just cutting every time in half? integers are unique
+// minimal height is log (n)
+
+template<typename T>
+TreeNode<T>* createBST(const std::vector<T>& sorted, int first, int last) {
+    int rootInd = (last - first) / 2 + first;
+    if (last == first + 1) // base case
+        return new TreeNode<T>(sorted[first], nullptr, nullptr);
+    TreeNode<T>* leftPtr = nullptr;
+    if (first != rootInd)
+        leftPtr = createBST(sorted, first, rootInd);
+    TreeNode<T>* rightPtr = nullptr;
+    if (rootInd + 1 != last)
+        rightPtr= createBST(sorted, rootInd + 1, last);
+    return new TreeNode<T>(sorted[rootInd], leftPtr, rightPtr);
+}
+
+void ex4_3() {
+    std::cout << "ex4.3 \n";
+    for (int cases = 0; cases < 50; ++cases) {
+        std::vector<int> in;
+        for (int sample = 0; sample < std::rand() % 10000; ++sample)
+            in.push_back(std::rand() % 20);
+        std::sort(in.begin(), in.end());
+        auto node = createBST(in, 0, (int) in.size()) ;
+        auto height = getHeight(node) ;
+        std::cout << " sample size=" << in.size() << ", max height = " << height << ", log(size)=" << log2(in.size()) << std::endl;
+    }
+}
+
+void ex4_1() {
     std::cout << "ex4.1 \n";
     TreeNode<int> a {15, nullptr, nullptr};
     TreeNode<int> b {10, &a, nullptr };
@@ -108,7 +155,9 @@ int main(int argc, const char * argv[]) {
     TreeNode<int> d {3, &b, &c };
     std::pair<bool, int> res { checkBalanced(&d) };
     std::cout << " is the tree balanced? " << res.first << std::endl;
-    
+}
+
+void ex4_2() {
     std::cout << "ex4.2 \n";
     Graph g;
     g.addLink(1, 2);
@@ -132,5 +181,10 @@ int main(int argc, const char * argv[]) {
     std::cout << (BFSreach(g, 3, 2) ? " yes " : " no ") << std::endl;
     std::cout << (BFSreach(g, 5, 2) ? " yes " : " no ") << std::endl;
     std::cout << (BFSreach(g, 4, 5) ? " yes " : " no ") << std::endl;
+}
+
+int main(int argc, const char * argv[]) {
+    //ex4_1();
+        ex4_3();
     return 0;
 }

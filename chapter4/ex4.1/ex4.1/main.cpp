@@ -12,6 +12,7 @@
 #include <queue>
 #include <algorithm>
 #include <unordered_set>
+#include <list>
 #include <stdlib.h>
 /*
  
@@ -62,6 +63,15 @@ int getHeight(TreeNode<T>* root) {
     return std::max(recurseLeft, recurseRight) + 1;
 }
 
+void ex4_1() {
+    std::cout << "ex4.1 \n";
+    TreeNode<int> a {15, nullptr, nullptr};
+    TreeNode<int> b {10, &a, nullptr };
+    TreeNode<int> c {5, nullptr, nullptr };
+    TreeNode<int> d {3, &b, &c };
+    std::pair<bool, int> res { checkBalanced(&d) };
+    std::cout << " is the tree balanced? " << res.first << std::endl;
+}
 /*
  4.2 Given a directed graph, design an algorithm to find out whether there is a route between two nodes.
  */
@@ -112,6 +122,32 @@ bool BFSreach(const Graph& g, int source, int target) {
     return false;
 }
 
+
+void ex4_2() {
+    std::cout << "ex4.2 \n";
+    Graph g;
+    g.addLink(1, 2);
+    g.addLink(2, 3);
+    g.addLink(2, 5);
+    g.addLink(5, 6);
+    g.addLink(6, 4);
+    std::cout << (BFSreach(g, 1, 2) ? " yes " : " no ") << std::endl;
+    std::cout << (BFSreach(g, 2, 3) ? " yes " : " no ") << std::endl;
+    std::cout << (BFSreach(g, 1, 3) ? " yes " : " no ") << std::endl;
+    std::cout << (BFSreach(g, 2, 5) ? " yes " : " no ") << std::endl;
+    std::cout << (BFSreach(g, 1, 5) ? " yes " : " no ") << std::endl;
+    std::cout << (BFSreach(g, 5, 6) ? " yes " : " no ") << std::endl;
+    std::cout << (BFSreach(g, 2, 6) ? " yes " : " no ") << std::endl;
+    std::cout << (BFSreach(g, 6, 4) ? " yes " : " no ") << std::endl;
+    std::cout << (BFSreach(g, 5, 4) ? " yes " : " no ") << std::endl;
+    std::cout << (BFSreach(g, 2, 4) ? " yes " : " no ") << std::endl;
+    std::cout << (BFSreach(g, 1, 4) ? " yes " : " no ") << std::endl;
+    std::cout << (BFSreach(g, 2, 1) ? " yes " : " no ") << std::endl;
+    std::cout << (BFSreach(g, 3, 1) ? " yes " : " no ") << std::endl;
+    std::cout << (BFSreach(g, 3, 2) ? " yes " : " no ") << std::endl;
+    std::cout << (BFSreach(g, 5, 2) ? " yes " : " no ") << std::endl;
+    std::cout << (BFSreach(g, 4, 5) ? " yes " : " no ") << std::endl;
+}
 /*
 4.3 Given a sorted (increasing order) array with unique integer elements, write an algo- rithm to create a binary search tree with minimal height.
 */
@@ -147,44 +183,56 @@ void ex4_3() {
     }
 }
 
-void ex4_1() {
-    std::cout << "ex4.1 \n";
-    TreeNode<int> a {15, nullptr, nullptr};
-    TreeNode<int> b {10, &a, nullptr };
-    TreeNode<int> c {5, nullptr, nullptr };
-    TreeNode<int> d {3, &b, &c };
-    std::pair<bool, int> res { checkBalanced(&d) };
-    std::cout << " is the tree balanced? " << res.first << std::endl;
+/* 4.4 Given a binary tree, design an algorithm which creates a linked list of all the nodes at
+ each depth (e.g., if you have a tree with depth D, you'll have D linked lists).
+ */
+
+template<typename T>
+std::vector<std::list<TreeNode<T>* > > createLists(TreeNode<T>* root) {
+    int depth = 0;
+    std::vector<std::list<TreeNode<T>* > > res;
+    std::list<TreeNode<T>* > level;
+    level.push_back(root);
+    res.push_back(level);
+    do {
+        // look at the current level, collect the descendant nodes
+        std::list<TreeNode<T>* > nextLevel;
+        for (auto node : res[depth]) {
+            if (node->left)
+                nextLevel.push_back(node->left);
+            if (node->right)
+                nextLevel.push_back(node->right);
+        }
+        if (nextLevel.empty())
+            return res;
+        ++depth;
+        res.push_back(nextLevel);
+    } while (true);
+    return res;
 }
 
-void ex4_2() {
-    std::cout << "ex4.2 \n";
-    Graph g;
-    g.addLink(1, 2);
-    g.addLink(2, 3);
-    g.addLink(2, 5);
-    g.addLink(5, 6);
-    g.addLink(6, 4);
-    std::cout << (BFSreach(g, 1, 2) ? " yes " : " no ") << std::endl;
-    std::cout << (BFSreach(g, 2, 3) ? " yes " : " no ") << std::endl;
-    std::cout << (BFSreach(g, 1, 3) ? " yes " : " no ") << std::endl;
-    std::cout << (BFSreach(g, 2, 5) ? " yes " : " no ") << std::endl;
-    std::cout << (BFSreach(g, 1, 5) ? " yes " : " no ") << std::endl;
-    std::cout << (BFSreach(g, 5, 6) ? " yes " : " no ") << std::endl;
-    std::cout << (BFSreach(g, 2, 6) ? " yes " : " no ") << std::endl;
-    std::cout << (BFSreach(g, 6, 4) ? " yes " : " no ") << std::endl;
-    std::cout << (BFSreach(g, 5, 4) ? " yes " : " no ") << std::endl;
-    std::cout << (BFSreach(g, 2, 4) ? " yes " : " no ") << std::endl;
-    std::cout << (BFSreach(g, 1, 4) ? " yes " : " no ") << std::endl;
-    std::cout << (BFSreach(g, 2, 1) ? " yes " : " no ") << std::endl;
-    std::cout << (BFSreach(g, 3, 1) ? " yes " : " no ") << std::endl;
-    std::cout << (BFSreach(g, 3, 2) ? " yes " : " no ") << std::endl;
-    std::cout << (BFSreach(g, 5, 2) ? " yes " : " no ") << std::endl;
-    std::cout << (BFSreach(g, 4, 5) ? " yes " : " no ") << std::endl;
+void ex4_4() {
+    std::cout << "ex4.4 \n";
+        std::vector<int> in;
+        for (int sample = 0; sample < std::rand() % 10000; ++sample)
+            in.push_back(std::rand() % 20);
+        std::sort(in.begin(), in.end());
+        auto node = createBST(in, 0, (int) in.size()) ;
+        auto height = getHeight(node) ;
+        std::cout << " sample size=" << in.size() << ", max height = " << height << ", log(size)=" << log2(in.size()) << std::endl;
+    auto lists = createLists(node);
+    for (int depth = 0; depth < lists.size(); ++depth) {
+        std::cout << " level " << depth << ": ";
+        for (auto elem : lists[depth]) {
+            std::cout << elem->value << ", ";
+        }
+        std::cout << std::endl;
+    }
 }
 
 int main(int argc, const char * argv[]) {
     //ex4_1();
-        ex4_3();
+    //    ex4_3();
+    ex4_4();
     return 0;
 }

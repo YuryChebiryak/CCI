@@ -230,9 +230,42 @@ void ex4_4() {
     }
 }
 
+/* 4.5 Implement a function to check if a binary tree is a binary search tree.
+ */
+template<typename T>
+bool checkBST(TreeNode<T>* node) {
+    // value of left child must be less, value of the right one must be greater
+    if (node->left) {
+        if (node->left->value >= node->value)
+            return false;
+        if (!checkBST(node->left))
+            return false;
+    }
+    if (node->right) {
+        if (node->right->value < node->value)
+            return false;
+        if (!checkBST(node->right))
+            return false;
+    }
+    return true;
+}
+
+void ex4_5() {
+    std::cout << "ex4.5 \n";
+    std::vector<int> in;
+    for (int sample = 0; sample < std::rand() % 10000; ++sample)
+        in.push_back(std::rand() % 20);
+    std::sort(in.begin(), in.end());
+    auto node = createBST(in, 0, (int) in.size()) ;
+    auto height = getHeight(node) ;
+//    std::cout << " sample size=" << in.size() << ", max height = " << height << ", log(size)=" << log2(in.size()) << std::endl;
+    std::cout << "is it a BST? " << checkBST(node);
+}
+
 int main(int argc, const char * argv[]) {
     //ex4_1();
     //    ex4_3();
-    ex4_4();
+//    ex4_4();
+    ex4_5();
     return 0;
 }

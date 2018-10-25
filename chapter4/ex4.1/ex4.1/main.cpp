@@ -24,10 +24,11 @@ template<typename T>
 class TreeNode {
 public:
     void print() { std::cout << "node: " << value << " "; }
-    TreeNode(const T& val, TreeNode* l, TreeNode* r) : value(val), left(l), right(r) {}
+    TreeNode(const T& val, TreeNode* l, TreeNode* r) : value(val), left(l), right(r) { parent = nullptr; }
     T value;
     TreeNode* left;
     TreeNode* right;
+    TreeNode* parent;
 };
 
 template<typename T>
@@ -167,7 +168,12 @@ TreeNode<T>* createBST(const std::vector<T>& sorted, int first, int last) {
     TreeNode<T>* rightPtr = nullptr;
     if (rootInd + 1 != last)
         rightPtr= createBST(sorted, rootInd + 1, last);
-    return new TreeNode<T>(sorted[rootInd], leftPtr, rightPtr);
+    TreeNode<T>* res = new TreeNode<T>(sorted[rootInd], leftPtr, rightPtr);
+    if (leftPtr)
+        leftPtr->parent = res;
+    if (rightPtr)
+        rightPtr->parent = res;
+    return res;
 }
 
 void ex4_3() {
@@ -257,15 +263,64 @@ void ex4_5() {
         in.push_back(std::rand() % 20);
     std::sort(in.begin(), in.end());
     auto node = createBST(in, 0, (int) in.size()) ;
-    auto height = getHeight(node) ;
 //    std::cout << " sample size=" << in.size() << ", max height = " << height << ", log(size)=" << log2(in.size()) << std::endl;
     std::cout << "is it a BST? " << checkBST(node);
 }
 
+/* 4.6 Write an algorithm to find the 'next'node (i.e., in-order successor) of a given node in
+ a binary search tree. You may assume that each node has a link to its parent.
+ */
+template<typename T>
+TreeNode<T>* getNextNode(TreeNode<T>* node) {
+    if (node->right) { // need to take the route to the right once and then downwards taking left all the time if possible
+        TreeNode<T>* current = node->right;
+        while (current->left)
+            current = current->left;
+        return current;
+    } else { // need to go up till we have a route to the right and then take right turn and slide downwards taking left all the time
+        TreeNode<T>* junction = node->parent;
+        while (junction != nullptr && junction->right == nullptr)
+            junction = junction->parent;
+        if (junction->right == nullptr) return junction;
+        TreeNode<T>* current = junction->right;
+        while (current->left)
+            current = current->left;
+        return current;
+    }
+    return nullptr;
+}
+
+void ex4_6() {
+    std::cout << "ex4.6 \n";
+    std::vector<int> in;
+    for (int sample = 0; sample <  10; ++sample)
+        in.push_back(std::rand() % 2000);
+    std::sort(in.begin(), in.end());
+    auto node = createBST(in, 0, (int) in.size()) ;
+    //    std::cout << " sample size=" << in.size() << ", max height = " << height << ", log(size)=" << log2(in.size()) << std::endl;
+    //std::cout << "is it a BST? " << checkBST(node);
+    auto lists = createLists(node);
+    for (int depth = 0; depth < lists.size(); ++depth) {
+        std::cout << " level " << depth << ": ";
+        for (auto elem : lists[depth]) {
+            std::cout << elem->value << ", ";
+        }
+        std::cout << std::endl;
+    }
+    std::cout << "next node of node "  << node->value << " is " << getNextNode(node)->value << std::endl;
+    node = node->right;
+    std::cout << "next node of node "  << node->value << " is " << getNextNode(node)->value << std::endl;
+    node = node->left;
+    std::cout << "next node of node "  << node->value << " is " << getNextNode(node)->value << std::endl;
+    node = node->left;
+    std::cout << "next node of node "  << node->value << " is " << getNextNode(node)->value << std::endl;
+    
+}
 int main(int argc, const char * argv[]) {
     //ex4_1();
     //    ex4_3();
 //    ex4_4();
-    ex4_5();
+  //  ex4_5();
+    ex4_6();
     return 0;
 }

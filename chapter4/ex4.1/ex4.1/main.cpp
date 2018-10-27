@@ -277,7 +277,9 @@ TreeNode<T>* getNextNode(TreeNode<T>* node) {
         while (current->left)
             current = current->left;
         return current;
-    } else { // need to go up till we have a route to the right and then take right turn and slide downwards taking left all the time
+    } else {
+        // this is incorrect!
+        /*// need to go up till we have a route to the right and then take right turn and slide downwards taking left all the time
         TreeNode<T>* junction = node->parent;
         while (junction != nullptr && junction->right == nullptr)
             junction = junction->parent;
@@ -286,6 +288,20 @@ TreeNode<T>* getNextNode(TreeNode<T>* node) {
         while (current->left)
             current = current->left;
         return current;
+         */
+        /*
+         But what if the node doesn't have a right subtree? This is where it gets a bit trickier.
+         If a node n doesn't have a right subtree, then we are done traversing n's subtree. We need to pick up where we left off with n's parent, which we'll call q.
+         If n was to the left of q, then the next node we should traverseshould be q (again, since le ft -> current -> right).
+         If n were to the right of q, then we have fully traversed q's subtree as well. We need to traverse upwards from q until we find a node x that we have nof fully traversed.How do we know that we have not fully traversed a node x? We know we have hit this case when we move from a left node to its parent. The left node is fully traversed, but its parent is not.
+         */
+        TreeNode<T>* q = node;
+        TreeNode<T>* x = q->parent;
+        while (x != nullptr && x->left != q) {
+            q = x;
+            x = x->parent;
+        }
+        return x;
     }
     return nullptr;
 }
@@ -296,8 +312,13 @@ void ex4_6() {
     for (int sample = 0; sample <  10; ++sample)
         in.push_back(std::rand() % 2000);
     std::sort(in.begin(), in.end());
-    auto node = createBST(in, 0, (int) in.size()) ;
-    //    std::cout << " sample size=" << in.size() << ", max height = " << height << ", log(size)=" << log2(in.size()) << std::endl;
+    TreeNode<int>* node = createBST(in, 0, (int) in.size()) ;
+    auto root = node;
+    TreeNode<int>* rightmost = root;
+    std::cout << "root.value=" << root->value << ", node.value=" << node->value << ", rightmost.value=" << rightmost->value << std::endl;
+    rightmost = rightmost->right;
+    rightmost = rightmost->right;
+    std::cout << "next node of node "  << rightmost->value << " is " << getNextNode(rightmost)->value << std::endl;   //    std::cout << " sample size=" << in.size() << ", max height = " << height << ", log(size)=" << log2(in.size()) << std::endl;
     //std::cout << "is it a BST? " << checkBST(node);
     auto lists = createLists(node);
     for (int depth = 0; depth < lists.size(); ++depth) {
@@ -307,6 +328,7 @@ void ex4_6() {
         }
         std::cout << std::endl;
     }
+   
     std::cout << "next node of node "  << node->value << " is " << getNextNode(node)->value << std::endl;
     node = node->right;
     std::cout << "next node of node "  << node->value << " is " << getNextNode(node)->value << std::endl;
@@ -314,6 +336,8 @@ void ex4_6() {
     std::cout << "next node of node "  << node->value << " is " << getNextNode(node)->value << std::endl;
     node = node->left;
     std::cout << "next node of node "  << node->value << " is " << getNextNode(node)->value << std::endl;
+
+    
     
 }
 int main(int argc, const char * argv[]) {

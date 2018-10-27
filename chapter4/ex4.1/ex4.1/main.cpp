@@ -318,7 +318,8 @@ void ex4_6() {
     std::cout << "root.value=" << root->value << ", node.value=" << node->value << ", rightmost.value=" << rightmost->value << std::endl;
     rightmost = rightmost->right;
     rightmost = rightmost->right;
-    std::cout << "next node of node "  << rightmost->value << " is " << getNextNode(rightmost)->value << std::endl;   //    std::cout << " sample size=" << in.size() << ", max height = " << height << ", log(size)=" << log2(in.size()) << std::endl;
+    auto next = getNextNode(rightmost);
+    std::cout << "next node of node "  << rightmost->value << " is " << (next ? next->value : -1 ) << std::endl;   //    std::cout << " sample size=" << in.size() << ", max height = " << height << ", log(size)=" << log2(in.size()) << std::endl;
     //std::cout << "is it a BST? " << checkBST(node);
     auto lists = createLists(node);
     for (int depth = 0; depth < lists.size(); ++depth) {

@@ -13,6 +13,7 @@
 #include <algorithm>
 #include <unordered_set>
 #include <list>
+#include <stack>
 #include <stdlib.h>
 /*
  
@@ -337,15 +338,73 @@ void ex4_6() {
     std::cout << "next node of node "  << node->value << " is " << getNextNode(node)->value << std::endl;
     node = node->left;
     std::cout << "next node of node "  << node->value << " is " << getNextNode(node)->value << std::endl;
-
-    
-    
 }
+
+/* 4.7 Design an algorithm and write code to find the first common ancestor of two nodes in a binary tree. Avoid storing additional nodes in a data structure.NOTE: This is not necessarily a binary search tree.
+ */
+// we have to either assume that we have links to parents at nodes or that we are given the root node
+template<typename T>
+std::stack<TreeNode<T>*> getPath(TreeNode<T>* a) {
+    std::stack<TreeNode<T> *> path;
+    TreeNode<T>* aParent = a->parent;
+    while (aParent != nullptr) {
+        path.push(aParent);
+        aParent = aParent->parent;
+    };
+    return path;
+}
+
+template<typename T>
+TreeNode<T>* firstCommonAncestor(TreeNode<T>* a, TreeNode<T>* b) {
+    std::stack<TreeNode<T>* > aPath = getPath(a), bPath = getPath(b);
+    //now consider them in the reversed order
+    TreeNode<T>* commonAncestor = nullptr;
+    while ( !aPath.empty() && !bPath.empty() && aPath.top() == bPath.top()) {
+        commonAncestor = aPath.top();
+        
+        aPath.pop();
+        bPath.pop();
+    }
+    return commonAncestor;
+}
+
+void ex4_7() {
+    std::cout << "ex4.7 \n";
+    std::vector<int> in;
+    for (int sample = 0; sample <  10; ++sample)
+        in.push_back(std::rand() % 2000);
+    std::sort(in.begin(), in.end());
+    TreeNode<int>* node = createBST(in, 0, (int) in.size()) ;
+    auto root = node;
+    TreeNode<int>* rightmost = root;
+    std::cout << "root.value=" << root->value << ", node.value=" << node->value << ", rightmost.value=" << rightmost->value << std::endl;
+    rightmost = rightmost->right;
+    TreeNode<int>* oneToLeft = rightmost->left;
+    rightmost = rightmost->right;
+    
+    
+    auto next = getNextNode(rightmost);
+    std::cout << "next node of node "  << rightmost->value << " is " << (next ? next->value : -1 ) << std::endl;   //    std::cout << " sample size=" << in.size() << ", max height = " << height << ", log(size)=" << log2(in.size()) << std::endl;
+    //std::cout << "is it a BST? " << checkBST(node);
+    auto lists = createLists(node);
+    for (int depth = 0; depth < lists.size(); ++depth) {
+        std::cout << " level " << depth << ": ";
+        for (auto elem : lists[depth]) {
+            std::cout << elem->value << ", ";
+        }
+        std::cout << std::endl;
+    }
+    
+    auto common = firstCommonAncestor(rightmost, oneToLeft);
+    std::cout << "common ancestor = " << common->value << std::endl;
+}
+
 int main(int argc, const char * argv[]) {
     //ex4_1();
     //    ex4_3();
 //    ex4_4();
   //  ex4_5();
-    ex4_6();
+//    ex4_6();
+    ex4_7();
     return 0;
 }

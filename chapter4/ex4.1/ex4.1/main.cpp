@@ -15,6 +15,7 @@
 #include <list>
 #include <stack>
 #include <stdlib.h>
+#include <assert.h>
 /*
  
  ex 4.1
@@ -368,6 +369,37 @@ TreeNode<T>* firstCommonAncestor(TreeNode<T>* a, TreeNode<T>* b) {
     return commonAncestor;
 }
 
+template<typename T>
+TreeNode<T>* commonAncestorDescendRec(TreeNode<T>* root, TreeNode<T>* a, TreeNode<T>* b, bool& coversA, bool& coversB) {
+    if (root == nullptr) {
+        return nullptr; // we don't update values of coversA and coversB
+    }
+    // need to check if both nodes are in the same subtree
+    TreeNode<T>* leftRes = nullptr;
+    bool leftCoversA = false;
+    bool leftCoversB = false;
+    if (root->left != nullptr) {
+        leftRes = commonAncestorDescendRec(root->left, a, b, leftCoversA, leftCoversB);
+    }
+    TreeNode<T>* rightRes = nullptr;
+    bool rightCoversA = false;
+    bool rightCoversB = false;
+    if (root->right != nullptr) {
+        rightRes = commonAncestorDescendRec(root->right, a, b, rightCoversA, rightCoversB);
+    }
+    coversA = coversA || (root == a) || leftCoversA || rightCoversA;
+    coversB = coversB || (root == b) || rightCoversA || rightCoversB;
+    if (leftCoversA && leftCoversB)
+        return leftRes;
+    if (rightCoversA && rightCoversB)
+        return rightRes;
+    if ((leftCoversA && rightCoversB) || (leftCoversB && rightCoversA))
+        return root;
+    return nullptr;
+}
+
+
+
 void ex4_7() {
     std::cout << "ex4.7 \n";
     std::vector<int> in;
@@ -395,8 +427,15 @@ void ex4_7() {
         std::cout << std::endl;
     }
     
-    auto common = firstCommonAncestor(rightmost, oneToLeft);
-    std::cout << "common ancestor = " << common->value << std::endl;
+    //auto common = firstCommonAncestor(rightmost, oneToLeft);
+    bool coversA = false; bool coversB = false;
+    auto common = commonAncestorDescendRec(root, rightmost, oneToLeft, coversA, coversB);
+    assert(common->value == 1709);
+    coversA = false; coversB = false;
+  //  common = firstCommonAncestor(root, rightmost);
+    common = commonAncestorDescendRec(root, root, rightmost, coversA, coversB);
+    assert(common == nullptr);
+    std::cout << "common ancestor = " << (common ? common->value : 0) << std::endl;
 }
 
 int main(int argc, const char * argv[]) {

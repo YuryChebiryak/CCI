@@ -438,12 +438,74 @@ void ex4_7() {
     std::cout << "common ancestor = " << (common ? common->value : 0) << std::endl;
 }
 
+/*4.8 You have two very large binary trees: Tl, with millions of nodes, and T2, with
+hundreds of nodes. Create an algorithm to decideifT2 isa subtree ofTl.
+A tree T2 is a subtree of Tl if there exists a node n in Tl such that the subtree ofn is identical to T2. That is, if you cut off the tree at node n, the two trees would be identical.
+*/
+
+template<typename T>
+class Metrics {
+public:
+    T    root_value;
+    bool has_left_child;
+    bool has_right_child;
+    T    left_value;
+    T    right_value;
+    size_t depth;
+    size_t n_nodes;
+    T hash;
+    
+};
+
+template<typename T>
+Metrics<T> collectMetrics(TreeNode<T>* root) {
+    Metrics<T> res;
+    if (root != nullptr) {
+        res.root_value = root->value;
+        res.has_left_child = (root->left != nullptr);
+        res.has_right_child = (root->right != nullptr);
+        if (root->left)
+            res.left_value = root->left.value;
+        if (root->right)
+            res.right_value = root->right.value;
+        
+        
+    }
+    return res;
+}
+
+template<typename T>
+bool findSubtree(TreeNode<T>* t1, TreeNode<T>* t2) {
+    // for T2, collect the following metrics: depth, number of nodes and hash of their values, then
+    //  for each node in T1 which is the same with T2's root invoke the DFS algorithm to compute the aformentioned metrics,
+    //    and which aborts if the depth is higher than the T2's depth, or if the number of nodes in the subtree exceeds (T1 is very large!)
+    //  IF all the metrics are identical, the actual comparison of every nodes commenses
+    // metrics can be extended/minimized (e.g. checking that left and right children are the same before proceeding
+    auto metrics = collectMetrics(t2);
+    auto metrics2 = collectMetrics(t1->left);
+    auto metrics3 = collectMetrics(t1->right);
+    return metrics2.root_value == metrics.root_value;
+}
+
+void ex_4_8() {
+    std::vector<int> in;
+    //seed48(2018);
+    for (int sample = 0; sample <  20180000; ++sample)
+        in.push_back(std::rand() % 200);
+    std::sort(in.begin(), in.end());
+    TreeNode<int>* node = createBST(in, 0, (int) in.size()) ;
+    auto root = node;
+    std::cout << "subtree " << (findSubtree(root, root->left) ? " exists " : " doesn't exist ") << std::endl;
+}
+
+
 int main(int argc, const char * argv[]) {
     //ex4_1();
     //    ex4_3();
 //    ex4_4();
   //  ex4_5();
 //    ex4_6();
-    ex4_7();
+//    ex4_7();
+    ex_4_8();
     return 0;
 }

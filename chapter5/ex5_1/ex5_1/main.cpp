@@ -27,7 +27,7 @@
  
  */
 
-int ex5_2(int M, int N, int i, int j) {
+int ex5_1(int M, int N, int i, int j) {
     int shifted_M = M << i;
     //std::cout << " shifted_M equals " << shifted_M << std::endl;
     int res = N | shifted_M;

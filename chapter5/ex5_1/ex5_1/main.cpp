@@ -37,6 +37,6 @@ int ex5_1(int M, int N, int i, int j) {
 int main(int argc, const char * argv[]) {
     // insert code here...
     std::cout << "Hello, World!\n";
-    std::cout << " ex 5.1 " << ex5_2(19, 1024, 2, 6) << std::endl;
+    std::cout << " ex 5.1 " << ex5_1(19, 1024, 2, 6) << std::endl;
     return 0;
 }

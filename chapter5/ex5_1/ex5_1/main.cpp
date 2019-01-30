@@ -23,14 +23,26 @@
  
  Q1 does this assume that inside N for the places from i to j there are only zeros?
  
- shift M by i bits to the left, then perform bitwise or
+ shift M by i bits to the left, then perform bitwise OR
+ 
+ 100 0000 0000
+ xxx x100 11xx
+ 
+ need to keep bits from i to j: do a bitwise AND with
+ 111 1000 0011
  
  */
 
-int ex5_1(int M, int N, int i, int j) {
-    int shifted_M = M << i;
+int ex5_1(unsigned M, unsigned N, unsigned i, unsigned j) {
+    unsigned int shifted_M = M << i;
     //std::cout << " shifted_M equals " << shifted_M << std::endl;
-    int res = N | shifted_M;
+    //clean the bits in N (from i to j)
+    unsigned int section = ~0; // all ones
+    section <<= 32 - j;
+    section >>= 32 - j - i; // has 1s only between i and j
+    section = ~section; // has 0s now
+    unsigned int cleared_N = N & section;
+    unsigned int res = cleared_N | shifted_M;
     return res;
 }
 
@@ -38,5 +50,6 @@ int main(int argc, const char * argv[]) {
     // insert code here...
     std::cout << "Hello, World!\n";
     std::cout << " ex 5.1 " << ex5_1(19, 1024, 2, 6) << std::endl;
+    std::cout << " testing that N was cleared between i and j : " << ex5_1(19, 1024 + 16 + 8, 2, 6) << std::endl;
     return 0;
 }

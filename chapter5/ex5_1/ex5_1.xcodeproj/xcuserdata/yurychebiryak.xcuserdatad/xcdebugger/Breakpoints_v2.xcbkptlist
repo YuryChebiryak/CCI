@@ -15,7 +15,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "37"
             endingLineNumber = "37"
-            landmarkName = "ex5_1(int M, int N, int i, int j)"
+            landmarkName = "ex5_1(unsigned M, unsigned N, unsigned i, unsigned j)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

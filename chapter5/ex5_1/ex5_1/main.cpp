@@ -46,6 +46,12 @@ int ex5_1(unsigned M, unsigned N, unsigned i, unsigned j) {
     return res;
 }
 
+/*
+5.2 Given a real number between 0 and 1 (e.g., 0.72) that is passed in as a double, print the binary representation. If the number cannot be represented accurately in binary with at most 32 characters, print "ERROR."
+ */
+
+
+
 int main(int argc, const char * argv[]) {
     // insert code here...
     std::cout << "Hello, World!\n";
